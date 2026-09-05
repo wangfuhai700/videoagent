@@ -17,22 +17,22 @@ LibTV 官方 skill 写得很明确：前端 Agent 只做传话，不要自己拆
 ## 流水线
 
 ```
-主题/口播文案
+主题/口播文案 + 素材目录
     │
     ▼
-① LLM 输出 storyboard.json（镜头 id、口播、画面 prompt、时长）
+① LLM 输出 storyboard.json（镜头 id、口播、画面 prompt、时长、asset_id）
     │
     ▼
 ② 并发 TTS（先做，拿到真实音频时长）
     │
     ▼
-③ 按音频时长 clamp 到模型允许区间（4–12s）并发提交视频任务、轮询、下载
+③ 有 asset_id 的镜头用原图 Ken Burns / 原片裁切；其余镜头按音频时长并发提交视频任务
     │
     ▼
 ④ 每镜：画面 trim/冻帧 对齐口播 → 统一分辨率/帧率/音频
     │
     ▼
-⑤ ffmpeg concat + ASS 烧字幕（+ 可选 BGM ducking）
+⑤ ffmpeg concat + ASS 烧字幕（+ 素材里的 BGM 或 bgm_path）
     │
     ▼
 final.mp4    jobs/<id>/ 可断点续跑
@@ -62,6 +62,7 @@ final.mp4    jobs/<id>/ 可断点续跑
       "visual_prompt": "机房俯拍，在线绿灯稳定，离线任务填满空闲 CPU",
       "camera": "slow push in",
       "negative_prompt": "text, watermark, logo"
+      "asset_id": "a1"
     }
   ]
 }
@@ -72,18 +73,18 @@ final.mp4    jobs/<id>/ 可断点续跑
 把编排器当成工具，而不是让模型自己点网页：
 
 ```text
-用户给主题
- → Agent 调：python -m video_pipeline --theme "..." --copy-file script.txt
+用户给主题和素材目录
+ → Agent 调：python -m video_pipeline --theme "..." --copy-file script.txt --assets ./materials
  → 读 jobs/*/storyboard.json 给用户确认（可选）
  → 失败则只重跑缺的镜头（同一 --job-dir）
  → 交付 final.mp4
 ```
 
-本机联调（不花视频费，画面是色块占位）：
+本机联调（不花视频费；有图则用原图推拉，无图则色块占位）：
 
 ```bash
 python3 -m pip install -r video_pipeline/requirements.txt
-PYTHONPATH=. python3 -m video_pipeline --theme "TencentOS 离在线混部" --provider mock --tts mock
+PYTHONPATH=. python3 -m video_pipeline --theme "TencentOS 离在线混部" --provider mock --tts mock --assets ./materials
 ```
 
 真出片：
@@ -131,7 +132,8 @@ jobs/20260101-120000/
 
 ## 下一步（未做，按需加）
 
-- 角色定妆图 → 每镜 I2V
+- 用户图片走 Seedance / 万相 I2V（现在是 ffmpeg Ken Burns，保证原图进成片）
+- 角色定妆图锁定后每镜 I2V
 - 火山 / CosyVoice 音色克隆
 - Whisper 词级字幕（现在是按镜头整句）
 - 镜头失败自动改写 prompt 重试

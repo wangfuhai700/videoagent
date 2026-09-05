@@ -16,6 +16,7 @@ class Shot(BaseModel):
     visual_prompt: str
     camera: str = "medium shot"
     negative_prompt: str = ""
+    asset_id: str = ""
 
     @field_validator("narration", "visual_prompt")
     @classmethod
