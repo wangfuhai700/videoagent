@@ -61,7 +61,7 @@ final.mp4    jobs/<id>/ 可断点续跑
       "narration": "在线任务要稳，离线任务吃剩余算力。",
       "visual_prompt": "机房俯拍，在线绿灯稳定，离线任务填满空闲 CPU",
       "camera": "slow push in",
-      "negative_prompt": "text, watermark, logo"
+      "negative_prompt": "text, watermark, logo",
       "asset_id": "a1"
     }
   ]
