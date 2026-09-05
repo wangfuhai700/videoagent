@@ -1,0 +1,15 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 720
+PlayResY: 1280
+WrapStyle: 2
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,WenQuanYi Micro Hei,42,&H00FFFFFF,&H000000FF,&H00000000,&H64000000,0,0,0,0,100,100,0,0,1,2,0,2,40,40,80,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:03.11,Default,,0,0,0,,在线任务要稳，延迟必须可控。
+Dialogue: 0,0:00:03.11,0:00:06.67,Default,,0,0,0,,离线任务吃剩余算力，不能抢在线。
+Dialogue: 0,0:00:06.67,0:00:10.45,Default,,0,0,0,,CPU、IO、缓存、网络都要隔离\N。

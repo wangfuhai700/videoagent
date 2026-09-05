@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+jobs/
+*.mp4
+!tests/fixtures/**
+!examples/**/*.mp4
+.pytest_cache/
+.mypy_cache/
+dist/
+*.egg-info/

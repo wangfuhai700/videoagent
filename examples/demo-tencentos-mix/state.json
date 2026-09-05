@@ -1,0 +1,47 @@
+{
+  "created_at": "2026-09-05T16:57:18.166090+00:00",
+  "steps": {
+    "storyboard": {
+      "at": "2026-09-05T16:57:18.166575+00:00",
+      "shots": 3,
+      "title": "TencentOS 离在线混部"
+    },
+    "tts": {
+      "at": "2026-09-05T16:57:18.217660+00:00",
+      "ok": true
+    },
+    "video": {
+      "at": "2026-09-05T16:57:18.912296+00:00",
+      "ok": true
+    },
+    "align": {
+      "at": "2026-09-05T16:57:20.015747+00:00",
+      "count": 3
+    },
+    "final": {
+      "at": "2026-09-05T16:57:20.727273+00:00",
+      "path": "examples/demo-tencentos-mix/final.mp4"
+    }
+  },
+  "shots": {
+    "2": {
+      "tts": "narration.wav",
+      "updated_at": "2026-09-05T16:57:19.623199+00:00",
+      "video": "raw.mp4",
+      "aligned": "aligned.mp4"
+    },
+    "3": {
+      "tts": "narration.wav",
+      "updated_at": "2026-09-05T16:57:20.015441+00:00",
+      "video": "raw.mp4",
+      "aligned": "aligned.mp4"
+    },
+    "1": {
+      "tts": "narration.wav",
+      "updated_at": "2026-09-05T16:57:19.275369+00:00",
+      "video": "raw.mp4",
+      "aligned": "aligned.mp4"
+    }
+  },
+  "updated_at": "2026-09-05T16:57:20.727293+00:00"
+}

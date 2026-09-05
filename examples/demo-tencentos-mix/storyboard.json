@@ -1,0 +1,33 @@
+{
+  "title": "TencentOS 离在线混部",
+  "theme": "TencentOS 离在线混部",
+  "aspect_ratio": "9:16",
+  "style": "cinematic, consistent lighting, same character design",
+  "character_bible": "围绕主题「TencentOS 离在线混部」保持同一角色与场景色调",
+  "shots": [
+    {
+      "id": 1,
+      "duration_sec": 4.0,
+      "narration": "在线任务要稳，延迟必须可控。",
+      "visual_prompt": "9:16 cinematic shot of: TencentOS 离在线混部. On-screen action matching: 在线任务要稳，延迟必须可控。. photoreal, consistent character, no captions, no watermark",
+      "camera": "slow push in",
+      "negative_prompt": "text, watermark, logo, subtitles"
+    },
+    {
+      "id": 2,
+      "duration_sec": 4.0,
+      "narration": "离线任务吃剩余算力，不能抢在线。",
+      "visual_prompt": "9:16 cinematic shot of: TencentOS 离在线混部. On-screen action matching: 离线任务吃剩余算力，不能抢在线。. photoreal, consistent character, no captions, no watermark",
+      "camera": "gentle pan",
+      "negative_prompt": "text, watermark, logo, subtitles"
+    },
+    {
+      "id": 3,
+      "duration_sec": 4.0,
+      "narration": "CPU、IO、缓存、网络都要隔离。",
+      "visual_prompt": "9:16 cinematic shot of: TencentOS 离在线混部. On-screen action matching: CPU、IO、缓存、网络都要隔离。. photoreal, consistent character, no captions, no watermark",
+      "camera": "slow push in",
+      "negative_prompt": "text, watermark, logo, subtitles"
+    }
+  ]
+}
