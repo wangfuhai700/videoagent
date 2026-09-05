@@ -4,15 +4,23 @@ import argparse
 from datetime import datetime
 from pathlib import Path
 
+from video_pipeline.assets import collect_assets, text_from_assets
 from video_pipeline.config import load_config
 from video_pipeline.orchestrator import Pipeline
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="文案/主题 → 分镜 → 并发视频+TTS → ffmpeg 成片")
+    parser = argparse.ArgumentParser(description="素材 + 文案/主题 → 分镜 → 并发视频+TTS → ffmpeg 成片")
     parser.add_argument("--theme", required=True, help="主题，例如：TencentOS 离在线混部一分钟讲解")
     parser.add_argument("--copy", default="", help="已有口播文案；为空则由 LLM/启发式撰写")
     parser.add_argument("--copy-file", type=Path, help="从文件读取口播文案")
+    parser.add_argument(
+        "--assets",
+        action="append",
+        type=Path,
+        default=[],
+        help="素材文件或目录，可重复。图片/视频进镜头，音频作 BGM，txt/md 并入口播",
+    )
     parser.add_argument("--config", type=Path, help="YAML 配置")
     parser.add_argument("--provider", choices=["mock", "seedance", "wan"], help="覆盖视频后端")
     parser.add_argument("--tts", choices=["mock", "edge"], help="覆盖 TTS 后端")
@@ -31,9 +39,13 @@ def main(argv: list[str] | None = None) -> int:
     copy = args.copy
     if args.copy_file:
         copy = args.copy_file.read_text(encoding="utf-8")
+    assets = collect_assets(args.assets)
+    extra = text_from_assets(assets)
+    if extra:
+        copy = f"{copy}\n{extra}".strip() if copy else extra
 
     job_dir = args.job_dir or Path("jobs") / datetime.now().strftime("%Y%m%d-%H%M%S")
-    final = Pipeline(cfg, job_dir).run(args.theme, copy)
+    final = Pipeline(cfg, job_dir, assets).run(args.theme, copy)
     print(final)
     return 0
 

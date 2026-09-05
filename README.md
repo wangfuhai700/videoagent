@@ -9,10 +9,10 @@
 用 Agent 自动跑完短视频生产，而不是让模型去点 LibTV 画布。
 
 ```
-主题 / 口播文案
-    → LLM 拆成 storyboard.json（逐镜口播、画面 prompt、时长）
+主题 / 口播文案 + 素材（图/视频/BGM/文案文件）
+    → LLM 拆成 storyboard.json（逐镜口播、画面 prompt、时长、asset_id）
     → 并发 TTS，用真实音频时长决定每镜视频时长
-    → 逐镜并发调用视频 API（Seedance / 万相，默认 3 路）
+    → 有素材的镜头用原图/原片；没有的镜头再调视频 API
     → ffmpeg 对齐、拼接、烧 ASS 字幕
     → final.mp4
 ```
@@ -39,6 +39,7 @@
 | ffmpeg 对齐、concat、中文 ASS 烧录 | 完成 |
 | 断点目录 `jobs/<id>/` | 完成 |
 | LibTV IM 客户端（路径 B，不拆镜） | 完成 |
+| 用户素材 `--assets`（图/视频进镜头，音频作 BGM，txt 并入口播） | 完成（图做 Ken Burns，视频裁切；未做 I2V） |
 | 角色定妆图 → I2V | 未做 |
 | 音色克隆、词级字幕 | 未做 |
 
@@ -66,8 +67,11 @@ python3 -m pip install -r video_pipeline/requirements.txt
 PYTHONPATH=. python3 -m video_pipeline \
   --theme "TencentOS 离在线混部" \
   --copy $'在线任务要稳，延迟必须可控。\n离线任务吃剩余算力，不能抢在线。\nCPU、IO、缓存、网络都要隔离。' \
+  --assets ./materials \
   --provider mock --tts mock
 ```
+
+`materials/` 里放 png/jpg/mp4（进对应镜头）、mp3/wav（当 BGM）、txt/md（并入口播）。没有素材的镜头仍走 `mock` / Seedance / 万相。
 
 真出片：
 

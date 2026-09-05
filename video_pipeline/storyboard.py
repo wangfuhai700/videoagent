@@ -16,6 +16,7 @@ STORYBOARD_SYSTEM = """你是短视频分镜导演。把主题或口播文案拆
 - visual_prompt 用视频模型能吃的画面描述：主体、动作、场景、光线、镜头运动；保持角色/场景一致。
 - narration 是口播原文，口语化，一句一镜，不要旁白编号。
 - 竖屏默认 9:16，横屏 16:9。
+- 若用户给了素材列表，能对上的镜头必须填 asset_id（如 a1）；对不上则 asset_id 为空字符串。
 JSON 结构：
 {
   "title": "string",
@@ -30,7 +31,8 @@ JSON 结构：
       "narration": "口播",
       "visual_prompt": "画面提示词",
       "camera": "slow push in",
-      "negative_prompt": "text, watermark, logo"
+      "negative_prompt": "text, watermark, logo",
+      "asset_id": ""
     }
   ]
 }
@@ -112,7 +114,7 @@ def _extract_json(text: str) -> dict[str, Any]:
     return json.loads(raw[start : end + 1])
 
 
-def llm_storyboard(theme: str, copy: str, cfg: PipelineConfig) -> Storyboard:
+def llm_storyboard(theme: str, copy: str, cfg: PipelineConfig, assets_note: str = "") -> Storyboard:
     if not cfg.llm_api_key:
         return heuristic_storyboard(theme, copy, cfg)
 
@@ -120,7 +122,8 @@ def llm_storyboard(theme: str, copy: str, cfg: PipelineConfig) -> Storyboard:
         f"主题：{theme}\n"
         f"画幅：{cfg.aspect_ratio}\n"
         f"最多镜头：{cfg.max_shots}\n"
-        f"已有文案（可为空，空则你撰写口播）：\n{copy or '（无，请根据主题撰写口播）'}"
+        f"已有文案（可为空，空则你撰写口播）：\n{copy or '（无，请根据主题撰写口播）'}\n"
+        f"{assets_note}"
     )
     payload = {
         "model": cfg.llm_model,
